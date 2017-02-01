@@ -5,6 +5,18 @@
     become: yes
     become_method: sudo
   - name: clone my devops repoe
-    git: clone=yes repo=https://github.com/amitene/devops.git dest=/home/ec2-user/devops/
-  - name: clone the spring repo
+    git: clone=yes repo=https://github.com/amitene/devops.git dest=/home/ec2-user/devops/ update=no
+  - name: clone the spring-petclinick repo
     git: clone=yes repo=https://github.com/amitene/spring-petclinic.git dest=/home/ec2-user/spring-petclinic/
+  - name: install docker
+    yum: name=docker state=latest
+    become: yes
+    become_method: sudo
+  - name: add the "docker" group to "ec2-user"
+    user: name=ec2-user groups=docker append=yes
+    become: yes
+    become_method: sudo
+  - name: start the docker service
+    service: name=docker state=started
+    become: yes
+    become_method: sudo
